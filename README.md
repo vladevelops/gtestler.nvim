@@ -20,13 +20,15 @@ The plugin works only in .go files.
 Install using [lazy](https://github.com/folke/lazy.nvim):
 
 ```lua
+
 {
   "vladevelops/gtestler.nvim",
   config = function()
     -- REQUIRED
     require("gtestler").setup({})
-  end,
-}
+  end
+},
+
 ```
 
 ## Setup Options
@@ -39,7 +41,9 @@ Install using [lazy](https://github.com/folke/lazy.nvim):
 By default, `gtestler` does not assign any mappings. It exposes a set of APIs for all functions to call. You can copy the suggested key bindings or change them to your own.
 
 ```lua
-local gtestler = require("gtestler").setup({ split_method = "horizontal" })
+
+local gtestler = require("gtestler")
+gtestler.setup({ split_method = "horizontal" })
 
 vim.keymap.set("n", "<leader>tl", function()
   gtestler.open_tests_list()
