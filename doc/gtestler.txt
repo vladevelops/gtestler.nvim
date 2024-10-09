@@ -1,0 +1,62 @@
+*gtestler*
+
+
+gtestler have a simple list of APIs. Here a easy documentation.
+
+
+
+API                                                             *gtestler-api*
+==============================================================================
+
+
+  :h gtestler.open_tests_list
+  :h gtestler.execute_test
+  :h gtestler.add_test
+  :h gtestler.delete_test
+  :h gtestler.add_favorite_test
+  :h gtestler.execute_favorite_test
+
+
+
+  open_tests_list()                                        *open_tests_list()*
+  Opens a list of all added tests for this project. Be aware the projects
+  working directory is used to check for the valid tests
+    > 
+      vim.fn.getcwd() 
+    <
+    the last directory in the path provided by the getcwd 
+    command is the project directory.
+
+  execute_test()                                                *execute_test()*
+  Executes the test under the cursor. You can also use <CR>, it mapped to run
+  the test in the scope of the gtestler buffer list.
+
+
+  add_test()                                                        *add_test()*
+  Adds test to the list. You can run it from any line of the test function
+  scope. 
+    > 
+    [no] 
+    [yes] func TestMyTestSample(t *testing.T) {
+    [yes]     ... 
+    [yes]     ...
+    [yes]     ... 
+    [yes] } 
+    [no]
+    <
+    The plugin will add the name of the function as label for the test.
+
+  add_favorite_test()                                      *add_favorite_test()*
+  Same as add_test(), in addition it makes the test to be favorite and 
+  now this test can be executed by calling `execute_favorite_test()` see below.
+
+  execute_favorite_test()                             *execute_favorite_test()*
+  Executes the favorite test.
+
+  delete_test()                                                 *delete_test()*
+  Deletes the test under the cursor. It will re-render the buffer list.
+
+
+
+
+

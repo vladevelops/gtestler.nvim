@@ -178,6 +178,13 @@ function M.add_test()
     gtestler_utils.save_json_to_file(tests_commands)
     return test_name
 end
+
+--- @return string
+function M.add_favorite_test()
+    current_favorite_test = M.add_test()
+    return current_favorite_test
+end
+
 function M.delete_test()
     local command_alias = gtestler_utils.get_command_alias()
 
@@ -200,35 +207,6 @@ function M.setup(opts)
     M.opts = {
         split_method = gtestler_utils.validate_split_method(opts.split_method),
     }
-
-    vim.keymap.set("n", "<leader>tl", function()
-        M.open_tests_list()
-    end, { desc = "Open avaiable tests list" })
-
-    vim.keymap.set("n", "<leader>tr", function()
-        M.execute_test()
-    end, { desc = "run go test under the cursor" })
-
-    vim.keymap.set("n", "<leader>ta", function()
-        local test_name = M.add_test()
-        print("Test: " .. test_name .. " is now added to gtestler list")
-    end, { desc = "Add to gtestler list" })
-
-    vim.keymap.set("n", "<leader>td", function()
-        M.delete_test()
-    end, { desc = "" })
-
-    vim.keymap.set("n", "<leader>taf", function()
-        local test_name = M.add_test()
-        current_favorite_test = test_name
-
-        print("Test: " .. test_name .. " is now added to fast execute")
-    end)
-
-    vim.keymap.set("n", "<leader>tf", function()
-        print("Test: favorite test running")
-        M.execute_favorite_test()
-    end, { desc = "run go favorite tets" })
 end
 
 return M

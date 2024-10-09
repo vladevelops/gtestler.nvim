@@ -21,16 +21,64 @@ The tests you add to the list are saved to a configuration file so when you come
 Install using: 
 [lazy](https://github.com/folke/lazy.nvim):
 
-```
-	{
-		"vladevelops/gtestler.nvim",
-		config = function()
-		-- REQUIRED
-		-- in opts: split_method = horizontal or vertical 
-		require("gtestler").setup({})
-		end,
-	},
+```lua
+{
+ "vladevelops/gtestler.nvim",
+ config = function()
+ 	-- REQUIRED
+ 	require("gtestler").setup({})
+ end,
+},
 
 ```
 
+## setup.opts
+
+ - split_method = horizontal or vertical
+ This option sets the split in which the test will be executed to `split` or `vsplit`. 
+
+## Keymaps
+
+By default gtestler do not assign any mappings.
+gtestler exposes a set of APIs for all the functions  to call.
+You can copy the suggested key bidings or change to yours.
+
+
+```lua
+
+local gtestler = require("gtestler").setup({split_method = "horizontal"})
+
+vim.keymap.set("n", "<leader>tl", function()
+  gtestler.open_tests_list()
+end, { desc = "Open avaiable tests list" })
+
+vim.keymap.set("n", "<leader>tr", function()
+  gtestler.execute_test()
+end, { desc = "run go test under the cursor" })
+
+vim.keymap.set("n", "<leader>ta", function()
+  local test_name = gtestler.add_test()
+  print("Test: " .. test_name .. " is now added to gtestler list")
+end, { desc = "Add to gtestler list" })
+
+vim.keymap.set("n", "<leader>td", function()
+  gtestler.delete_test()
+end, { desc = "Deleted selected test" })
+
+vim.keymap.set("n", "<leader>taf", function()
+  local test_name = gtestler.add_favorite_test()
+  print("Test: " .. test_name .. " is now added to favorite")
+end)
+
+vim.keymap.set("n", "<leader>tf", function()
+  print("Test: favorite test running")
+  gtestler.execute_favorite_test()
+end, { desc = "run go favorite tets" })
+
+```
+
+
+## gtestler help
+
+`:help gtestler`
 
