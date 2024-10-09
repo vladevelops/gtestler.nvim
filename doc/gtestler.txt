@@ -22,6 +22,8 @@ directory is used to locate the valid tests:
     <
 The last directory in the path provided by the `getcwd()` command is used as
 the project directory.
+If before test labal you see * (ex: * TestMyTestSample) it meens this test is 
+a favorite test at the moment.
 
 ------------------------------------------------------------------------------
 execute_test()                                       *gtestler.execute_test()*
@@ -57,3 +59,6 @@ delete_test()                                         *gtestler.delete_test()*
 Deletes the test under the cursor.
 It will automatically refresh the buffer list.
 
+
+
+vim:tw=80:ts=8:ft=help:norl:

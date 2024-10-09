@@ -1,60 +1,53 @@
-# gtestler.nvim 
+# gtestler.nvim
 ==============================================================================
 
-Easy to use go test list system. 
+**Easy-to-use Go test list system.**
 
-You need to test a function you are constantly changing, so you need to jump
-between buffers or keep a split and then run the tests.
+If you need to test a function that you are constantly changing, you might find yourself jumping between buffers or keeping a split open to run the tests. With this plugin, you can:
 
-With this plugin you can:
+- Create a list of tests you frequently use.
+- Run any test from any buffer.
+- Add a test to favorites and run it without opening the list.
+- Delete tests from the list.
+- Choose the split option to run the tests.
 
-- Create a list of tests you constantly using 
-- Run that test from any buffer you want
-- Add a test to favorite and run it with out opening the list
-- Delete the test from the list
-- Choose the split option to run the test
+The tests you add to the list are saved to a configuration file, so when you come back, you can easily run them.
 
+The plugin works only in .go files.
 
-The tests you add to the list are saved to a configuration file so when you come back you can just run them
+## Installation
 
-
-Install using: 
-[lazy](https://github.com/folke/lazy.nvim):
+Install using [lazy](https://github.com/folke/lazy.nvim):
 
 ```lua
 {
- "vladevelops/gtestler.nvim",
- config = function()
- 	-- REQUIRED
- 	require("gtestler").setup({})
- end,
-},
-
+  "vladevelops/gtestler.nvim",
+  config = function()
+    -- REQUIRED
+    require("gtestler").setup({})
+  end,
+}
 ```
 
-## setup.opts
+## Setup Options
 
- - split_method = horizontal or vertical
- This option sets the split in which the test will be executed to `split` or `vsplit`. 
+- **split_method**: `horizontal` or `vertical`  
+  This option sets the split direction in which the test will be executed. Choose either `split` or `vsplit`.
 
 ## Keymaps
 
-By default gtestler do not assign any mappings.
-gtestler exposes a set of APIs for all the functions  to call.
-You can copy the suggested key bidings or change to yours.
-
+By default, `gtestler` does not assign any mappings. It exposes a set of APIs for all functions to call. You can copy the suggested key bindings or change them to your own.
 
 ```lua
-
-local gtestler = require("gtestler").setup({split_method = "horizontal"})
+local gtestler = require("gtestler").setup({ split_method = "horizontal" })
 
 vim.keymap.set("n", "<leader>tl", function()
   gtestler.open_tests_list()
-end, { desc = "Open avaiable tests list" })
+end, { desc = "Open available tests list" })
 
 vim.keymap.set("n", "<leader>tr", function()
   gtestler.execute_test()
-end, { desc = "run go test under the cursor" })
+end, { desc = "Run Go test under the cursor" })
 
 vim.keymap.set("n", "<leader>ta", function()
   local test_name = gtestler.add_test()
@@ -63,22 +56,24 @@ end, { desc = "Add to gtestler list" })
 
 vim.keymap.set("n", "<leader>td", function()
   gtestler.delete_test()
-end, { desc = "Deleted selected test" })
+end, { desc = "Delete selected test" })
 
 vim.keymap.set("n", "<leader>taf", function()
   local test_name = gtestler.add_favorite_test()
-  print("Test: " .. test_name .. " is now added to favorite")
+  print("Test: " .. test_name .. " is now added to favorites")
 end)
 
 vim.keymap.set("n", "<leader>tf", function()
-  print("Test: favorite test running")
+  print("Running favorite test")
   gtestler.execute_favorite_test()
-end, { desc = "run go favorite tets" })
-
+end, { desc = "Run favorite test" })
 ```
 
+## Help
 
-## gtestler help
+For more information, run the command:
 
-`:help gtestler`
+```vim
+:h gtestler
 
+```
