@@ -118,6 +118,7 @@ end
 function M.run_selected_test()
     local command_alias = gtestler_utils.get_command_alias()
     if command_alias ~= "" then
+        command_alias = gtestler_utils.remove_star_if_exists(command_alias)
         local new_cmd = tests_commands[wd][command_alias]
         M.execute_wrap(new_cmd)
     else

@@ -105,7 +105,12 @@ function M.get_working_directory()
 
     return t[#t]
 end
-
+function M.remove_star_if_exists(str)
+    if str:match("^%* ") then
+        return str:gsub("^%* ", "")
+    end
+    return str
+end
 --- in context of gtestler list gets the test name
 ---@return string
 function M.get_command_alias()
