@@ -1,5 +1,4 @@
 ![gtestler_showcase](https://github.com/user-attachments/assets/398f3bfb-cea8-484b-9d8c-58bde8958830)
-
  gtestler.nvim
 ==============================================================================
 

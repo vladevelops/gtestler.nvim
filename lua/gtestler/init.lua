@@ -67,15 +67,18 @@ vim.api.nvim_create_user_command("Gtestler", function(opts)
             split_method = gtestler_utils.validate_split_method(subcommand),
         }
         print("Session split set to `vertical`")
+    elseif subcommand == "delete_all" then
+        M.delete_all_tests()
+        print("All test for this project deleted")
     else
         print("Command not recognized: " .. subcommand)
     end
 end, {
     nargs = 1,
     complete = function()
-        return { "horizontal", "vertical" }
+        return { "horizontal", "vertical", "delete_all" }
     end,
-    desc = "Run to set prefered split method for this session. horizontal: split, vertical: vsplit",
+    desc = "User callable commands",
 })
 
 --- opens the list with all the tests to run
@@ -195,7 +198,23 @@ function M.delete_test()
     end
     vim.cmd("bd!")
     M.open_tests_list()
+
+    gtestler_utils.save_json_to_file(tests_commands)
 end
+
+function M.delete_all_tests()
+    if tests_commands[wd] ~= nil then
+        tests_commands[wd] = {}
+    end
+
+    if gtestler_win_id ~= nil then
+        vim.cmd("bd!")
+        M.open_tests_list()
+    end
+
+    gtestler_utils.save_json_to_file(tests_commands)
+end
+
 function M.execute_test()
     local new_cmd = gtestler_utils.get_command_and_test_name()
     M.execute_wrap(new_cmd)
