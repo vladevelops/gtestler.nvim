@@ -83,3 +83,11 @@ For more information, run the command:
 :h gtestler
 
 ```
+
+
+
+
+**Version:** 0.1.0  
+**Author:** Developlend (Vladyslav Topyekha)  
+**License:** MIT  
+**Description:** Easy to use golang run tests solution.

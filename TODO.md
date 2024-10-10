@@ -5,9 +5,11 @@
 - [x] BUG: after quiting tests list buffer esc and CR effect remains on main buffer
 - [x] delete all  relative tests, user callable
 - [x] documentation
+- [ ] make a already added test in the list favorite
 - [ ] consider test name change, so delete test if not found
 - [ ] run tests by numbers
 - [ ] add test file location, and search test location in that file
 - [ ] add line to the floating buffer with fields to explain
 - [ ] add all tests in buffer to  gtester list
 - [ ] run test in float window
+- [ ] consider telescope integration 
