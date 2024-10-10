@@ -2,14 +2,17 @@
 - [x] BUG: isolate tests based on project
 - [x] delete tests from list
 - [x] add user action split option 
-- [x] BUG: after quiting tests list buffer esc and CR effect remains on main buffer
+- [x] BUG: after quitting tests list buffer esc and CR effect remains on main buffer
 - [x] delete all  relative tests, user callable
 - [x] documentation
+- [x] delete visually selected tests
 - [ ] make a already added test in the list favorite
 - [ ] consider test name change, so delete test if not found
 - [ ] run tests by numbers
 - [ ] add test file location, and search test location in that file
 - [ ] add line to the floating buffer with fields to explain
-- [ ] add all tests in buffer to  gtester list
+- [ ] add all tests in buffer to gtester list
 - [ ] run test in float window
+- [ ] highlight tests already in list
 - [ ] consider telescope integration 
+

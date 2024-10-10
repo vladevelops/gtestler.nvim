@@ -41,9 +41,28 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = pattern,
     group = gtestler_autogroup,
     callback = function()
+        vim.keymap.set("n", "<leader>tr", function()
+            M.run_selected_test()
+        end, {
+            buffer = true,
+            desc = "run selected test",
+            noremap = true,
+        })
+
         vim.keymap.set("n", "<CR>", function()
             M.run_selected_test()
         end, { buffer = true, desc = "run selected test" })
+
+        vim.keymap.set("v", "d", function()
+            M.delete_selected_tests()
+        end, { buffer = true, desc = "run selected test" })
+
+        vim.keymap.set(
+            "n",
+            "v",
+            "V",
+            { buffer = true, desc = "run selected test", noremap = true }
+        )
 
         vim.keymap.set(
             "n",
@@ -85,15 +104,6 @@ end, {
 function M.open_tests_list()
     local floating_buffer, win_id = gtestler_ui.create_buffer()
     gtestler_win_id = win_id
-
-    vim.api.nvim_buf_set_keymap(
-        floating_buffer,
-        "n",
-        "<leader>tr",
-        "<Cmd>lua require('gtestler').run_selected_test()<CR>",
-        { silent = true }
-    )
-
     local tests_list = {}
 
     local count = 1
@@ -214,6 +224,32 @@ function M.delete_all_tests()
     end
 
     gtestler_utils.save_json_to_file(tests_commands)
+end
+
+--- thanks to adoyle-h on https://github.com/nvim-telescope/telescope.nvim/issues/1923#issuecomment-1122642431
+--- for easy visul selection hint
+local function get_visual_selection()
+    vim.cmd('noau normal! "vy"')
+    local text = vim.fn.getreg("v")
+    vim.fn.setreg("v", {})
+    text = string.gsub(text, "\n", " ")
+    local result = vim.split(text, " ")
+    for _, command_alias in pairs(result) do
+        if command_alias ~= "" then
+            if tests_commands[wd] ~= nil then
+                tests_commands[wd][command_alias] = nil
+            end
+        end
+    end
+
+    vim.cmd("bd!")
+    M.open_tests_list()
+
+    gtestler_utils.save_json_to_file(tests_commands)
+end
+
+function M.delete_selected_tests()
+    get_visual_selection()
 end
 
 function M.execute_test()
