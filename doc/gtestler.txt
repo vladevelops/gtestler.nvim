@@ -65,10 +65,10 @@ It will automatically refresh the buffer list.
 visual_delete()                                      *gtestler.visual_delete()*
 Deletes the tests selected in visual mode.
 
-Press *v* to enter visual line mode, in the list buffer the *v* is mapped to *V*
+Press v to enter visual line mode, in the list buffer the v is mapped to V
 so it will always select the lines.
 
-Pressing *d* will delete all the selected tests.
+Pressing d will delete all the selected tests.
 
 It will automatically refresh the buffer list.
 
