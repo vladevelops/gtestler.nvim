@@ -13,6 +13,8 @@ Available Commands:
     :h gtestler.add_favorite_test
     :h gtestler.execute_favorite_test
     :h gtestler.visual_delete
+    :h gtestler.toggle_favorite
+
 
 ------------------------------------------------------------------------------
 open_tests_list()                                 *gtestler.open_tests_list()*
@@ -20,7 +22,7 @@ Opens a list of all added tests for the current project. The project's working
 directory is used to locate the valid tests:
     >
       vim.fn.getcwd() 
-    <
+<
 The last directory in the path provided by the `getcwd()` command is used as
 the project directory.
 If before test labal you see * (ex: * TestMyTestSample) it meens this test is 
@@ -35,7 +37,7 @@ to run the test in the context of the gtestler buffer list.
 add_test()                                               *gtestler.add_test()*
 Adds the test under the cursor to the list. You can run this from any line 
 within the test function scope:
-    >
+>
     [no] 
     [yes] func TestMyTestSample(t *testing.T) {
     [yes]     ... 
@@ -43,7 +45,7 @@ within the test function scope:
     [yes]     ... 
     [yes] } 
     [no]
-    <
+<
 The plugin will add the name of the function as a label for the test.
 
 ------------------------------------------------------------------------------
@@ -72,6 +74,11 @@ Pressing d will delete all the selected tests.
 
 It will automatically refresh the buffer list.
 
+------------------------------------------------------------------------------
+toggle_favorite()                                      *gtestler.favorite()*
+
+In the list of tests press f to toggle betwin current test 
+being favorite or not
 
 
 vim:tw=80:ts=8:ft=help:norl:

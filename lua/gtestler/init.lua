@@ -41,6 +41,13 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = pattern,
     group = gtestler_autogroup,
     callback = function()
+        vim.keymap.set("n", "f", function()
+            M.toggle_favorite()
+        end, {
+            buffer = true,
+            desc = "test is now favorite",
+            noremap = true,
+        })
         vim.keymap.set("n", "<leader>tr", function()
             M.run_selected_test()
         end, {
@@ -193,6 +200,18 @@ function M.add_test()
     return test_name
 end
 
+--- makes current test favorite
+function M.toggle_favorite()
+    local command_alias = gtestler_utils.get_command_alias()
+    if command_alias ~= "" then
+        print("command_alias:", command_alias)
+        command_alias = command_alias:gsub("^%s+", ""):gsub("%s+$", "")
+        current_favorite_test = command_alias
+        vim.cmd("bd!")
+        M.open_tests_list()
+    end
+end
+
 --- @return string
 function M.add_favorite_test()
     current_favorite_test = M.add_test()
@@ -254,7 +273,9 @@ end
 
 function M.execute_test()
     local new_cmd = gtestler_utils.get_command_and_test_name()
-    M.execute_wrap(new_cmd)
+    if new_cmd ~= nil then
+        M.execute_wrap(new_cmd)
+    end
 end
 
 --- @param opts {split_method: string} "method: horizontal|vertical"

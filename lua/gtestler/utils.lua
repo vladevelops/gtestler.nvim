@@ -54,6 +54,7 @@ function M.get_command_and_test_name()
 
     if ft ~= "go" then
         print("can only run test in a .go file, not " .. ft)
+        return
     end
 
     local test_name = iterateLines()
@@ -115,6 +116,7 @@ function M.remove_star_if_exists(str)
 end
 
 --- in context of gtestler list gets the test name
+--- checks the cursor current location line
 ---@return string
 function M.get_command_alias()
     local buf = vim.api.nvim_get_current_buf()
