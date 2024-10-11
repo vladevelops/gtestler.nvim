@@ -47,6 +47,7 @@ function M.validate_split_method(method)
     local case = cases[method] or cases["default"]
     return case()
 end
+
 function M.get_command_and_test_name()
     local pkg_name = get_package_name()
     local ft = vim.api.nvim_buf_get_option(0, "filetype")
@@ -105,12 +106,14 @@ function M.get_working_directory()
 
     return t[#t]
 end
+
 function M.remove_star_if_exists(str)
     if str:match("^%* ") then
         return str:gsub("^%* ", "")
     end
     return str
 end
+
 --- in context of gtestler list gets the test name
 ---@return string
 function M.get_command_alias()
