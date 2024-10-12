@@ -1,11 +1,19 @@
 local gtestler_utils = require("gtestler.utils")
 local gtestler_ui = require("gtestler.ui")
+local gtestler_log = require("gtestler.logs")
+
 local M = {}
 
 local gtestler_autogroup =
     vim.api.nvim_create_augroup("DEVELOPLAND_GTESTLER", { clear = true })
 
 local wd = gtestler_utils.get_working_directory()
+
+--- pk_name
+--- |-> test_label
+---    |->command_name: command_string
+---    |->file_name: string
+---    |->file_path: string
 local tests_commands = {}
 
 local current_favorite_test = ""
@@ -31,6 +39,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 
         if retore_tabel ~= nil then
             tests_commands = retore_tabel
+            gtestler_log.log_message("INFO", tests_commands)
         end
     end,
 
@@ -41,6 +50,13 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = pattern,
     group = gtestler_autogroup,
     callback = function()
+        vim.keymap.set("n", "g", function()
+            M.go_to_test_file()
+        end, {
+            buffer = true,
+            desc = "jump to test file and func line",
+            noremap = true,
+        })
         vim.keymap.set("n", "f", function()
             M.toggle_favorite()
         end, {
@@ -107,6 +123,21 @@ end, {
     desc = "User callable commands",
 })
 
+function M.go_to_test_file()
+    local command_alias = gtestler_utils.get_command_alias()
+    command_alias = gtestler_utils.remove_star_if_exists(command_alias)
+    gtestler_log.log_message("BIG", command_alias)
+    local file_path = tests_commands[wd][command_alias].file_path
+
+    vim.api.nvim_command("wincmd w")
+    vim.cmd("e " .. file_path)
+
+    vim.defer_fn(function()
+        local line = gtestler_utils.find_specific_function(command_alias)
+        vim.api.nvim_win_set_cursor(0, { line, 0 })
+    end, 1)
+end
+
 --- opens the list with all the tests to run
 function M.open_tests_list()
     local floating_buffer, win_id = gtestler_ui.create_buffer()
@@ -126,8 +157,6 @@ function M.open_tests_list()
     end
 
     vim.api.nvim_buf_set_lines(floating_buffer, 0, -1, false, tests_list)
-
-    -- this option is applied here, so the buffer remains writable when we need to add all the text
     vim.api.nvim_buf_set_option(floating_buffer, "modifiable", false)
 end
 
@@ -136,7 +165,7 @@ function M.run_selected_test()
     local command_alias = gtestler_utils.get_command_alias()
     if command_alias ~= "" then
         command_alias = gtestler_utils.remove_star_if_exists(command_alias)
-        local new_cmd = tests_commands[wd][command_alias]
+        local new_cmd = tests_commands[wd][command_alias].command_name
         M.execute_wrap(new_cmd)
     else
         print("No test to run")
@@ -146,7 +175,7 @@ end
 --- runs a previesly assigned favorite test
 function M.execute_favorite_test()
     if current_favorite_test ~= "" then
-        local new_cmd = tests_commands[wd][current_favorite_test]
+        local new_cmd = tests_commands[wd][current_favorite_test].command_name
         M.execute_wrap(new_cmd)
     else
         print("No favorite test founded")
@@ -190,14 +219,22 @@ end
 function M.add_test()
     local new_cmd, test_name = gtestler_utils.get_command_and_test_name()
 
-    if tests_commands[wd] == nil then
-        tests_commands[wd] = {}
+    if test_name ~= nil then
+        if tests_commands[wd] == nil then
+            tests_commands[wd] = {}
+        end
+
+        local file_path = vim.fn.expand("%:p")
+        tests_commands[wd][test_name] = {
+            command_name = new_cmd,
+            file_name = "",
+            file_path = file_path,
+        }
+
+        gtestler_utils.save_json_to_file(tests_commands)
+        return test_name
     end
-
-    tests_commands[wd][test_name] = new_cmd
-
-    gtestler_utils.save_json_to_file(tests_commands)
-    return test_name
+    return ""
 end
 
 --- makes current test favorite
