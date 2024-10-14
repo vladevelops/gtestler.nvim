@@ -2,8 +2,9 @@
  gtestler.nvim
 ==============================================================================
 
-[!NOTE]
-The plugin is new and may have some bugs
+> [!NOTE]  
+> The plugin is new and may have some bugs
+
 
 **Easy-to-use Go test list system.**
 
