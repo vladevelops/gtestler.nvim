@@ -78,6 +78,14 @@ vim.keymap.set("n", "<leader>tf", function()
   gtestler.execute_favorite_test()
 end, { desc = "Run favorite test" })
 
+vim.keymap.set("n", "<leader>tn", function()
+    gtestler.jump_to_next_test()
+end, { desc = "Jump to next test" })
+
+vim.keymap.set("n", "<leader>tp", function()
+    gtestler.jump_to_previous_test()
+end, { desc = "Jump to previous test" })
+
 ```
 
 ## Help

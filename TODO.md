@@ -10,6 +10,8 @@
 - [x] run test in the list window
 - [x] jump to test under the cursor
 - [x] delete test in normal mode
+- [ ] show buffer with all the available test in current folder
+- [ ] show all tests in whole project
 - [ ] restore favorite 
 - [x] jump to first test in buffer even if not added
 - [ ] highlight tests already in list
