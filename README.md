@@ -15,6 +15,7 @@ If you need to test a function that you are constantly changing, you might find 
 - Add a test to favorites and run it without opening the list.
 - Delete tests from the list.
 - Choose the split option to run the tests.
+- Jump to next and previous test 
 
 The tests you add to the list are saved to a configuration file, so when you come back, you can easily run them.
 
@@ -76,6 +77,7 @@ vim.keymap.set("n", "<leader>tf", function()
   print("Running favorite test")
   gtestler.execute_favorite_test()
 end, { desc = "Run favorite test" })
+
 ```
 
 ## Help
@@ -91,6 +93,6 @@ For more information, run the command:
 
 
 **Version:** 0.1.0  
-**Author:** Developlend (Vladyslav Topyekha)  
+**Author:** Developland (Vladyslav Topyekha)  
 **License:** MIT  
 **Description:** Easy to use golang run tests solution.

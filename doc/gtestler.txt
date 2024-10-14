@@ -6,14 +6,17 @@ gtestler provides a simple list of APIs. Below is the documentation for usage.
 ------------------------------------------------------------------------------
 Available Commands:
 
+    :h gtestler.add_test
+    :h gtestler.add_favorite_test
     :h gtestler.open_tests_list
     :h gtestler.execute_test
-    :h gtestler.add_test
-    :h gtestler.delete_test
-    :h gtestler.add_favorite_test
     :h gtestler.execute_favorite_test
+    :h gtestler.delete_test
     :h gtestler.visual_delete
     :h gtestler.toggle_favorite
+    :h gtestler.go_to_test_function
+    :h gtestler.jump_to_next
+    :h gtestler.jump_to_previous
 
 
 ------------------------------------------------------------------------------
@@ -25,7 +28,7 @@ directory is used to locate the valid tests:
 <
 The last directory in the path provided by the `getcwd()` command is used as
 the project directory.
-If before test labal you see * (ex: * TestMyTestSample) it meens this test is 
+If before test name you see * (ex: * TestMyTestSample) it means this test is 
 a favorite test at the moment.
 
 ------------------------------------------------------------------------------
@@ -75,10 +78,28 @@ Pressing d will delete all the selected tests.
 It will automatically refresh the buffer list.
 
 ------------------------------------------------------------------------------
-toggle_favorite()                                      *gtestler.favorite()*
+toggle_favorite()                                  *gtestler.toggle_favorite()*
 
-In the list of tests press f to toggle betwin current test 
+In the list of tests press f to toggle between current test 
 being favorite or not
+------------------------------------------------------------------------------
+go_to_test_function()                          *gtestler.go_to_test_function()*
 
+Pressing g on the test in the list, it will take you directly to that 
+function. Be aware renaming the file or the test function, will broke 
+the jumping system.
+------------------------------------------------------------------------------
+jump_to_next()                                                 *jump_to_next()*
 
-vim:tw=80:ts=8:ft=help:norl:
+Jumps to next test in the current buffer, from your current cursor location.
+If no test is founded below the cursor it will wrap around to check 
+tests available before the cursor.
+
+------------------------------------------------------------------------------
+jump_to_previous()                                          *jump_to_previous()*
+
+Jumps to previous test in the current buffer, from your current cursor location.
+If no test is founded above the cursor it will wrap around to check 
+tests available below the cursor.
+
+vim:tw=80:ts=8:ft=help

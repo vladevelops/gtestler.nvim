@@ -8,14 +8,16 @@
 - [x] delete visually selected tests
 - [x] make a already added test in the list favorite
 - [x] run test in the list window
-- [x] restore favorite 
 - [x] jump to test under the cursor
+- [x] delete test in normal mode
+- [ ] restore favorite 
+- [x] jump to first test in buffer even if not added
 - [ ] highlight tests already in list
-- [ ] consider test name change, so delete test if not found
 - [ ] run tests by numbers
 - [ ] on favorite toggle with multiple tests jump to correct line
 - [ ] add test file location, and search test location in that file
 - [ ] add line to the floating buffer with fields to explain
 - [ ] add all tests in buffer to gtester list
 - [ ] consider telescope integration 
+- [ ] consider test name change, so delete test if not found
 

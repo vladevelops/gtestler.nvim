@@ -32,6 +32,15 @@ vim.api.nvim_create_autocmd({ "BufLeave" }, {
     group = gtestler_autogroup,
 })
 
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+    pattern = "*_test.go",
+
+    callback = function()
+        gtestler_utils.find_all_tests_lines_in_buffer()
+    end,
+    group = gtestler_autogroup,
+})
+
 vim.api.nvim_create_autocmd("VimEnter", {
 
     callback = function()
@@ -39,7 +48,6 @@ vim.api.nvim_create_autocmd("VimEnter", {
 
         if retore_tabel ~= nil then
             tests_commands = retore_tabel
-            gtestler_log.log_message("INFO", tests_commands)
         end
     end,
 
@@ -57,6 +65,7 @@ vim.api.nvim_create_autocmd("FileType", {
             desc = "jump to test file and func line",
             noremap = true,
         })
+
         vim.keymap.set("n", "f", function()
             M.toggle_favorite()
         end, {
@@ -64,11 +73,12 @@ vim.api.nvim_create_autocmd("FileType", {
             desc = "test is now favorite",
             noremap = true,
         })
+
         vim.keymap.set("n", "<leader>tr", function()
             M.run_selected_test()
         end, {
             buffer = true,
-            desc = "run selected test",
+            desc = "run current test in the list",
             noremap = true,
         })
 
@@ -78,7 +88,11 @@ vim.api.nvim_create_autocmd("FileType", {
 
         vim.keymap.set("v", "d", function()
             M.delete_selected_tests()
-        end, { buffer = true, desc = "run selected test" })
+        end, { buffer = true, desc = "delete selected tests" })
+
+        vim.keymap.set("n", "d", function()
+            M.delete_test()
+        end, { buffer = true, desc = "delete test" })
 
         vim.keymap.set(
             "n",
@@ -126,7 +140,6 @@ end, {
 function M.go_to_test_file()
     local command_alias = gtestler_utils.get_command_alias()
     command_alias = gtestler_utils.remove_star_if_exists(command_alias)
-    gtestler_log.log_message("BIG", command_alias)
     local file_path = tests_commands[wd][command_alias].file_path
 
     vim.api.nvim_command("wincmd w")
@@ -138,7 +151,70 @@ function M.go_to_test_file()
     end, 1)
 end
 
+function M.jump_to_next_test()
+    local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+
+    local test_lines = gtestler_utils.find_all_tests_lines_in_buffer()
+    -- local test_lines = { 5, 7 }
+
+    if test_lines ~= nil then
+        -- search test forward
+        for _, line_value in pairs(test_lines) do
+            if line_value > row then
+                -- gtestler_log.log_message("jump to line: ", line_value)
+                vim.api.nvim_win_set_cursor(0, { line_value, 0 })
+                return
+            end
+        end
+
+        -- search tests backwards
+
+        for i = #test_lines, 1, -1 do
+            gtestler_log.log_message("lines backwards: ", test_lines[i])
+
+            if row > test_lines[i] then
+                -- gtestler_log.log_message("jump to line: ", line_value)
+                vim.api.nvim_win_set_cursor(0, { test_lines[i], 0 })
+                return
+            end
+        end
+    else
+        print("No test found")
+    end
+end
+function M.jump_to_previous_test()
+    local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+
+    local test_lines = gtestler_utils.find_all_tests_lines_in_buffer()
+    -- local test_lines = { 5, 7 }
+
+    if test_lines ~= nil then
+        -- search tests backwards
+        for i = #test_lines, 1, -1 do
+            gtestler_log.log_message("lines backwards: ", test_lines[i])
+
+            if row > test_lines[i] then
+                -- gtestler_log.log_message("jump to line: ", line_value)
+                vim.api.nvim_win_set_cursor(0, { test_lines[i], 0 })
+                return
+            end
+        end
+
+        -- search test forward
+        for _, line_value in pairs(test_lines) do
+            if line_value > row then
+                -- gtestler_log.log_message("jump to line: ", line_value)
+                vim.api.nvim_win_set_cursor(0, { line_value, 0 })
+                return
+            end
+        end
+    else
+        print("No test found")
+    end
+end
+
 --- opens the list with all the tests to run
+---
 function M.open_tests_list()
     local floating_buffer, win_id = gtestler_ui.create_buffer()
     gtestler_win_id = win_id
@@ -255,6 +331,7 @@ function M.add_favorite_test()
     return current_favorite_test
 end
 
+--- delete test under the cursor
 function M.delete_test()
     local command_alias = gtestler_utils.get_command_alias()
 

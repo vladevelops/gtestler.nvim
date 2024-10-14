@@ -41,8 +41,6 @@ function M.find_specific_function(func_label)
 
     local regex = "func%s+" .. func_label .. "%s*%b()"
 
-    -- gtestler_log.log_message("lines", lines)
-
     for i, line in ipairs(lines) do
         -- print("the line:", line)
         if startsWith(line, "func") then
@@ -55,6 +53,24 @@ function M.find_specific_function(func_label)
     end
 
     return -1
+end
+
+--- scans all buffer, and returns lines with tests
+--- return {1..3}
+function M.find_all_tests_lines_in_buffer()
+    local line_indexes = {}
+    local buffer_lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+
+    local regex = "func%s+Test"
+
+    for line_index, text_line in ipairs(buffer_lines) do
+        if string.match(text_line, regex) then
+            table.insert(line_indexes, line_index)
+        end
+    end
+    gtestler_log.log_message("INFO find: ", line_indexes)
+
+    return line_indexes
 end
 
 --- @param method string
@@ -99,7 +115,6 @@ function M.get_command_and_test_name()
     return new_cmd, test_name
 end
 
--- Scrivere la stringa JSON nel file
 function M.save_json_to_file(commands_table)
     local current_commands = vim.fn.json_encode(commands_table)
     local state_dir = vim.fn.stdpath("state")
@@ -112,10 +127,7 @@ function M.save_json_to_file(commands_table)
     end
 end
 
--- Funzione per caricare il file JSON
 function M.load_commands_table()
-    -- Apri il file in modalità lettura
-
     local state_dir = vim.fn.stdpath("state")
     local file = io.open(state_dir .. "/gtestler.json", "r")
     if not file then
@@ -123,7 +135,6 @@ function M.load_commands_table()
         return nil
     end
 
-    -- Leggi il contenuto del file
     local content = file:read("*all")
     file:close()
 
@@ -159,15 +170,4 @@ function M.get_command_alias()
     return line_text
 end
 
---- @param file_path string
-local function jump_to_file_dev(file_path)
-    -- code
-    --
-    -- local buf = vim.api.nvim_get_current_buf()
-    local cwd = vim.fn.getcwd()
-    --  need to save full path to file
-    local filename = cwd .. "/lua/gtestler/test/simple_test.go" -- replace with desired filename
-    vim.api.nvim_command("wincmd w")
-    vim.cmd("e " .. filename)
-end
 return M
