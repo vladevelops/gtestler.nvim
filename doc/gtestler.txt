@@ -89,14 +89,14 @@ Pressing g on the test in the list, it will take you directly to that
 function. Be aware renaming the file or the test function, will broke 
 the jumping system.
 ------------------------------------------------------------------------------
-jump_to_next()                                                 *jump_to_next()*
+jump_to_next()                                        *gtestler.jump_to_next()*
 
 Jumps to next test in the current buffer, from your current cursor location.
 If no test is founded below the cursor it will wrap around to check 
 tests available before the cursor.
 
 ------------------------------------------------------------------------------
-jump_to_previous()                                          *jump_to_previous()*
+jump_to_previous()                                 *gtestler.jump_to_previous()*
 
 Jumps to previous test in the current buffer, from your current cursor location.
 If no test is founded above the cursor it will wrap around to check 
