@@ -10,12 +10,16 @@
 - [x] run test in the list window
 - [x] jump to test under the cursor
 - [x] delete test in normal mode
+- [ ] add new tests on top
+- [ ] run tests by numbers
+- [ ] close test buffer key
+- [ ] BUG the project work dir with same name like backend are overlaping
+- [ ] tests with similat names at beginig are all triggered
 - [ ] show buffer with all the available test in current folder
 - [ ] show all tests in whole project
-- [ ] restore favorite 
+- [x] restore favorite 
 - [x] jump to first test in buffer even if not added
 - [ ] highlight tests already in list
-- [ ] run tests by numbers
 - [ ] on favorite toggle with multiple tests jump to correct line
 - [ ] add test file location, and search test location in that file
 - [ ] add line to the floating buffer with fields to explain

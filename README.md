@@ -104,3 +104,4 @@ For more information, run the command:
 **Author:** Developland (Vladyslav Topyekha)  
 **License:** MIT  
 **Description:** Easy to use golang run tests solution.
+

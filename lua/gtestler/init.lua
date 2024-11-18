@@ -44,10 +44,13 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 vim.api.nvim_create_autocmd("VimEnter", {
 
     callback = function()
-        local retore_tabel = gtestler_utils.load_commands_table()
+        local retsore_tabel = gtestler_utils.load_commands_table()
 
-        if retore_tabel ~= nil then
-            tests_commands = retore_tabel
+        if retsore_tabel ~= nil then
+            tests_commands = retsore_tabel
+            if tests_commands[wd].current_favorite_test ~= nil then
+                current_favorite_test = tests_commands[wd].current_favorite_test
+            end
         end
     end,
 
@@ -182,6 +185,7 @@ function M.jump_to_next_test()
         print("No test found")
     end
 end
+
 function M.jump_to_previous_test()
     local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
 
@@ -223,12 +227,14 @@ function M.open_tests_list()
     local count = 1
     if tests_commands[wd] ~= nil then
         for label, _ in pairs(tests_commands[wd]) do
-            if label == current_favorite_test then
-                table.insert(tests_list, count, "* " .. label)
-            else
-                table.insert(tests_list, count, label)
+            if label ~= "current_favorite_test" then
+                if label == current_favorite_test then
+                    table.insert(tests_list, count, "* " .. label)
+                else
+                    table.insert(tests_list, count, label)
+                end
+                count = count + 1
             end
-            count = count + 1
         end
     end
 
@@ -301,6 +307,7 @@ function M.add_test()
         end
 
         local file_path = vim.fn.expand("%:p")
+        -- Create the new entry
         tests_commands[wd][test_name] = {
             command_name = new_cmd,
             file_name = "",
@@ -317,17 +324,26 @@ end
 function M.toggle_favorite()
     local command_alias = gtestler_utils.get_command_alias()
     if command_alias ~= "" then
-        print("command_alias:", command_alias)
         command_alias = command_alias:gsub("^%s+", ""):gsub("%s+$", "")
         current_favorite_test = command_alias
+        print(current_favorite_test)
         vim.cmd("bd!")
         M.open_tests_list()
+
+        if string.sub(current_favorite_test, 1, string.len("*")) == "*" then
+            tests_commands[wd]["current_favorite_test"] = nil
+        else
+            tests_commands[wd]["current_favorite_test"] = current_favorite_test
+        end
+        gtestler_utils.save_json_to_file(tests_commands)
     end
 end
 
 --- @return string
 function M.add_favorite_test()
     current_favorite_test = M.add_test()
+
+    tests_commands[wd].current_favorite_test = current_favorite_test
     return current_favorite_test
 end
 

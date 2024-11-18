@@ -149,7 +149,7 @@ function M.get_working_directory()
         table.insert(t, str)
     end
 
-    return t[#t]
+    return t[#t - 1] .. "/" .. t[#t]
 end
 
 function M.remove_star_if_exists(str)
